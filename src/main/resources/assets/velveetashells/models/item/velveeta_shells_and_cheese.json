@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "velveetashells:items/velveeta_shells_and_cheese"
+        "layer0": "velveetashells:item/velveeta_shells_and_cheese"
     }
 }

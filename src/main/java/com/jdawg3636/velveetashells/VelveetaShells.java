@@ -1,72 +1,43 @@
 package com.jdawg3636.velveetashells;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.item.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@Mod(modid = VelveetaShells.MODID, name = VelveetaShells.NAME, version = VelveetaShells.VERSION)
+@Mod(VelveetaShells.MODID)
 @Mod.EventBusSubscriber
 public class VelveetaShells {
 
-    /*
-     * Mod Boiler Plate
-     */
-
     public static final String MODID = "velveetashells";
-    public static final String NAME = "Velveeta Shells & Cheese";
-    public static final String VERSION = "1.0";
-    private static Logger logger;
 
-    /*
-     * Content
-     */
-
-    public static final CreativeTabs VELVEETA_SHELLS_CREATIVE_TAB = new CreativeTabs("velveetashells") {
-        @SideOnly(Side.CLIENT)
-        public ItemStack getTabIconItem()
+    public static final ItemGroup VELVEETA_SHELLS_CREATIVE_TAB = new ItemGroup("velveetashells") {
+        @OnlyIn(Dist.CLIENT)
+        @Override
+        public ItemStack makeIcon()
         {
-            return new ItemStack(getVelveetaShellsCreativeTabIcon());
+            return new ItemStack(VELVEETA_SHELLS_AND_CHEESE_ITEM::get);
         }
     };
 
-    public static final Item VELVEETA_SHELLS_AND_CHEESE_ITEM = (new ItemFood(20, 1F, false)).setAlwaysEdible().setRegistryName("velveeta_shells_and_cheese").setUnlocalizedName("velveeta_shells_and_cheese").setCreativeTab(VELVEETA_SHELLS_CREATIVE_TAB);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
-    public static Item getVelveetaShellsCreativeTabIcon() {
-        return VELVEETA_SHELLS_AND_CHEESE_ITEM;
-    }
+    public static final RegistryObject<Item> VELVEETA_SHELLS_AND_CHEESE_ITEM = ITEMS.register("velveeta_shells_and_cheese",() -> new Item((new Item.Properties())
+            .tab(VELVEETA_SHELLS_CREATIVE_TAB)
+            .food(new Food.Builder()
+                    .nutrition(20)
+                    .saturationMod(1F)
+                    .alwaysEat()
+                    .build()
+            )
+    ));
 
-    /*
-     * Event Handling
-     */
-
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        logger = event.getModLog();
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(VELVEETA_SHELLS_AND_CHEESE_ITEM);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onRegisterModels(ModelRegistryEvent event) {
-        // Register Item Renders
-        ModelLoader.setCustomModelResourceLocation(VELVEETA_SHELLS_AND_CHEESE_ITEM, 0, new ModelResourceLocation(VELVEETA_SHELLS_AND_CHEESE_ITEM.getRegistryName(), "inventory"));
+    public VelveetaShells() {
+        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
 }
