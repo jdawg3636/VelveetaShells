@@ -1,13 +1,16 @@
 package com.jdawg3636.velveetashells;
 
-import net.minecraft.item.*;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod(VelveetaShells.MODID)
 @Mod.EventBusSubscriber
@@ -15,7 +18,7 @@ public class VelveetaShells {
 
     public static final String MODID = "velveetashells";
 
-    public static final ItemGroup VELVEETA_SHELLS_CREATIVE_TAB = new ItemGroup("velveetashells") {
+    public static final CreativeModeTab VELVEETA_SHELLS_CREATIVE_TAB = new CreativeModeTab("velveetashells") {
         @OnlyIn(Dist.CLIENT)
         @Override
         public ItemStack makeIcon()
@@ -28,7 +31,7 @@ public class VelveetaShells {
 
     public static final RegistryObject<Item> VELVEETA_SHELLS_AND_CHEESE_ITEM = ITEMS.register("velveeta_shells_and_cheese",() -> new Item((new Item.Properties())
             .tab(VELVEETA_SHELLS_CREATIVE_TAB)
-            .food(new Food.Builder()
+            .food(new FoodProperties.Builder()
                     .nutrition(20)
                     .saturationMod(1F)
                     .alwaysEat()
