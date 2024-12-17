@@ -3,9 +3,7 @@ package com.jdawg3636.velveetashells;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,19 +16,11 @@ public class VelveetaShells {
 
     public static final String MODID = "velveetashells";
 
-    public static final CreativeModeTab VELVEETA_SHELLS_CREATIVE_TAB = new CreativeModeTab("velveetashells") {
-        @OnlyIn(Dist.CLIENT)
-        @Override
-        public ItemStack makeIcon()
-        {
-            return new ItemStack(VELVEETA_SHELLS_AND_CHEESE_ITEM::get);
-        }
-    };
+    public static CreativeModeTab VELVEETA_SHELLS_CREATIVE_TAB;
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
     public static final RegistryObject<Item> VELVEETA_SHELLS_AND_CHEESE_ITEM = ITEMS.register("velveeta_shells_and_cheese",() -> new Item((new Item.Properties())
-            .tab(VELVEETA_SHELLS_CREATIVE_TAB)
             .food(new FoodProperties.Builder()
                     .nutrition(20)
                     .saturationMod(1F)
@@ -41,6 +31,24 @@ public class VelveetaShells {
 
     public VelveetaShells() {
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterCreativeModeTabEvent);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onBuildContentsCreativeModeTabEvent);
+    }
+
+    public void onRegisterCreativeModeTabEvent(CreativeModeTabEvent.Register event) {
+        VELVEETA_SHELLS_CREATIVE_TAB = event.registerCreativeModeTab(
+                new net.minecraft.resources.ResourceLocation(MODID, MODID),
+                builder -> builder
+                        .icon(() -> VELVEETA_SHELLS_AND_CHEESE_ITEM.get().getDefaultInstance())
+                        .title(net.minecraft.network.chat.Component.translatable("itemGroup.velveetashells"))
+                        .build()
+        );
+    }
+
+    public void onBuildContentsCreativeModeTabEvent(CreativeModeTabEvent.BuildContents event) {
+        if(event.getTab() == VELVEETA_SHELLS_CREATIVE_TAB) {
+            event.accept(VELVEETA_SHELLS_AND_CHEESE_ITEM);
+        }
     }
 
 }
