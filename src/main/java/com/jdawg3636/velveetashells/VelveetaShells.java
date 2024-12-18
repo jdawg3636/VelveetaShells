@@ -17,17 +17,17 @@ public class VelveetaShells {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
-    public static final DeferredHolder<Item, Item> VELVEETA_SHELLS_AND_CHEESE_ITEM = ITEMS.register("velveeta_shells_and_cheese",
-            () -> new Item((new Item.Properties())
+    public static final DeferredHolder<Item, Item> VELVEETA_SHELLS_AND_CHEESE_ITEM = ITEMS.registerItem("velveeta_shells_and_cheese", Item::new,
+            (new Item.Properties())
                     .food(new FoodProperties.Builder()
                     .nutrition(20)
                     .saturationModifier(1F)
                     .alwaysEdible()
                     .build()
             )
-    ));
+    );
 
     public static DeferredHolder<CreativeModeTab, CreativeModeTab> VELVEETA_SHELLS_CREATIVE_TAB = CREATIVE_MODE_TABS.register(MODID,
             () -> CreativeModeTab.builder()

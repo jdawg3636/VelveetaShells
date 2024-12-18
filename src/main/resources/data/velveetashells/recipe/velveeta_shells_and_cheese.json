@@ -1,15 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:milk_bucket"
-    },
-    {
-      "item": "minecraft:ender_eye"
-    }
+    "minecraft:wheat",
+    "minecraft:milk_bucket",
+    "minecraft:ender_eye"
   ],
   "result": {
     "id": "velveetashells:velveeta_shells_and_cheese",
