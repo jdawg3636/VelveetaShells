@@ -4,8 +4,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -23,8 +23,8 @@ public class VelveetaShells {
             () -> new Item((new Item.Properties())
                     .food(new FoodProperties.Builder()
                     .nutrition(20)
-                    .saturationMod(1F)
-                    .alwaysEat()
+                    .saturationModifier(1F)
+                    .alwaysEdible()
                     .build()
             )
     ));
@@ -36,10 +36,10 @@ public class VelveetaShells {
                     .build()
     );
 
-    public VelveetaShells() {
-        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        CREATIVE_MODE_TABS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onBuildContentsCreativeModeTabEvent);
+    public VelveetaShells(IEventBus modEventBus) {
+        ITEMS.register(modEventBus);
+        CREATIVE_MODE_TABS.register(modEventBus);
+        modEventBus.addListener(this::onBuildContentsCreativeModeTabEvent);
     }
 
     public void onBuildContentsCreativeModeTabEvent(BuildCreativeModeTabContentsEvent event) {
